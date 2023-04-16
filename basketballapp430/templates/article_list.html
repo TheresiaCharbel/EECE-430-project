@@ -1,0 +1,87 @@
+{% extends "main.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<head>
+    <meta charset="utf-8">
+    <title>Schedule</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #F7F7F7;
+        }
+        
+        h1 {
+            color: #444444;
+            text-align: center;
+        }
+        
+        .article {
+            background-color: #FFFFFF;
+            border: 1px solid #DDDDDD;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 10px;
+            position: relative;
+        }
+        
+        .article h2 {
+            color: #333333;
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+        
+        .article p {
+            color: #666666;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+        
+        .article .date {
+            font-size: 12px;
+            color: #999999;
+            margin-bottom: 10px;
+        }
+        
+        .article .actions {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            font-size: 12px;
+        }
+        
+        .article .actions a {
+            color: #0077CC;
+            text-decoration: none;
+            margin-left: 5px;
+        }
+        
+        .article .actions a:hover {
+            text-decoration: underline;
+        }
+        
+        .add-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Schedule</h1>
+    {% for art in articles %}
+        <div class="article">
+            <h2>{{ art.title }}</h2>
+            <p>{{ art.description }}</p>
+            <div class="date">{{ art.date }}</div>
+            <div class="actions">
+                <a href = "{% url 'update-article' art.id%}">Update</a>
+                <a href = "{% url 'delete-article' art.id%}">Delete</a>
+            </div>
+        </div>
+    {% endfor %}
+    <div class="add-link">
+        <a href="{% url 'add-article' %}">Add new item to the schedule</a>
+    </div>
+</body>
+{% endblock %}

@@ -3,4 +3,30 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
+<head>
+	<title>{{ player.name }}'s Profile</title>
+</head>
+<body>
+	<h1>{{ player.name }}'s Profile</h1>
+	<h2>Personal Info</h2>
+	<ul>
+		<li>Email: {{ player.email }}</li>
+		<li>Phone: {{ player.phone }}</li>
+		<li>Age: {{ player.age }}</li>
+		<li>Nationality: {{ player.nationality }}</li>
+		<li>Position: {{ player.get_position_display }}</li>
+	</ul>
+	<h2>Stats</h2>
+	<ul>
+		<li>Games Played: {{ player.games_played }}</li>
+		<li>Points Per Game: {{ player.points_per_game }}</li>
+		<li>Rebounds Per Game: {{ player.rebounds_per_game }}</li>
+		<li>Assists Per Game: {{ player.assists_per_game }}</li>
+		<li>Steals Per Game: {{ player.steals_per_game }}</li>
+		<li>Blocks Per Game: {{ player.blocks_per_game }}</li>
+		<li>Field Goals Per Game: {{ player.fieldgoals_per_game }}</li>
+		<li>Three Point Field Goal Percentage: {{ player.three_point_field_goal_percentage }}</li>
+		<li>Free Throw Percentage: {{ player.free_throw_percentage }}</li>
+	</ul>
+</body>
 {% endblock %}

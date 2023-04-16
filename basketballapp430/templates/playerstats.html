@@ -19,6 +19,12 @@
     background-color: #f2f2f2;
   }
 </style>
+
+<form method="get">
+  {{ form.as_p }}
+  <button type="submit">Sort</button>
+  <br></br>
+</form>
       <table>
           <tr>
               <th>Player ID</th>
@@ -37,6 +43,7 @@
               <th>FG PG</th>
               <th>3P%</th>
               <th>FT%</th>
+              <th>Data-driven score /10</th>
 
               
           </tr>
@@ -58,6 +65,7 @@
               <td>{{ player.fieldgoals_per_game }}</td>
               <td>{{ player.three_point_field_goal_percentage }}</td>
               <td>{{ player.free_throw_percentage }}</td>
+              <td>{{ player.data_score}}</td>
               <td><a href = "{% url 'updatePlayer' player.id       %}">Edit player information</a></td>
               <td><a href = "{% url 'delete-player' player.id       %}">Delete player</a></td>
 
