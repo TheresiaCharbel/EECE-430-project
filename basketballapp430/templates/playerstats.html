@@ -1,0 +1,78 @@
+{% extends "main.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<style>
+  table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  th {
+    background-color: #f2f2f2;
+  }
+</style>
+      <table>
+          <tr>
+              <th>Player ID</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Phone number</th>
+              <th>Age</th>
+              <th>Nationality</th>
+              <th>Position</th>
+              <th>Games played</th>
+              <th>PPG</th>
+              <th>RPG</th>
+              <th>APG</th>
+              <th>SPG</th>
+              <th>BPG</th>
+              <th>FG PG</th>
+              <th>3P%</th>
+              <th>FT%</th>
+
+              
+          </tr>
+          {% for player in players %}                         
+          <tr> 
+              <td>{{ player.id }}</td>
+              <td><a href = "{% url 'player-profile' player.id %}">{{ player.name }}</a></td>
+              <td>{{ player.email }}</td>
+              <td>{{ player.phone }}</td>
+              <td>{{ player.age }}</td>
+              <td>{{ player.nationality }}</td>
+              <td>{{ player.position }}</td>
+              <td>{{ player.games_played }}</td>
+              <td>{{ player.points_per_game }}</td>
+              <td>{{ player.rebounds_per_game }}</td>
+              <td>{{ player.assists_per_game }}</td>
+              <td>{{ player.steals_per_game }}</td>
+              <td>{{ player.blocks_per_game }}</td>
+              <td>{{ player.fieldgoals_per_game }}</td>
+              <td>{{ player.three_point_field_goal_percentage }}</td>
+              <td>{{ player.free_throw_percentage }}</td>
+              <td><a href = "{% url 'updatePlayer' player.id       %}">Edit player information</a></td>
+              <td><a href = "{% url 'delete-player' player.id       %}">Delete player</a></td>
+
+          </tr>
+          {% endfor %}
+      </table>
+      <br></br>
+      <div>
+        <a href = 'addplayer/'> Add a new player to the database</a>
+      </div>
+
+{% endblock %}
+
+
+
+
+
+  
