@@ -167,5 +167,5 @@ def deletearticle(request, pk):
         article.delete()
         return redirect('article')
     context = {'article': article}
-    return render(request, 'deletearticle.html', context)
+    return render(request, 'deletearticle.html', context) 
 
