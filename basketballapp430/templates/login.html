@@ -3,11 +3,58 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-<title>
-    <h1>Hello, this is the home page</h1>
-</title>
-<body>
-    <a href = "home/"> login </a>
-
-</body>
+  <div class="container">
+    {% if page == "login" %}
+      <div class="card">
+        <style>
+            .card-body {
+              width: 400px;
+              margin: 0 auto;
+            }
+          </style>
+        <h2 class="card-header">Login</h2>
+        <div class="card-body" style="max-width: 500px; margin: 0 auto;">
+          <form method="POST" action="">
+            {% csrf_token %}
+            <div class="form-group">
+              <label for="username">Username:</label>
+              <input type="text" class="form-control" id="username" name="username" placeholder="Enter username" required>
+            </div>
+            <div class="form-group">
+              <label for="password">Password:</label>
+              <input type="password" class="form-control" id="password" name="password" placeholder="Enter password" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Login</button>
+          </form>
+          <div class="card-footer">
+            <p class="text-muted">Don't have an account?</p>
+            <a href="{% url 'register' %}" class="btn btn-outline-primary">Sign up</a>
+          </div>
+        </div>
+      </div>
+    {% else %}
+      <div class="card">
+        <style>
+            .card-body {
+              width: 900px;
+              margin: 0 auto;
+            }
+          </style>
+        <h2 class="card-header">Sign up</h2>
+        <div class="card-body" style="max-width: 500px; margin: 0 auto;">
+          <form method="POST" action="">
+            {% csrf_token %}
+            <div>
+              {{form.as_p}}
+            </div>
+            <button type="submit" class="btn btn-primary">Sign up</button>
+          </form>
+          <div class="card-footer">
+            <p class="text-muted">Already have an account?</p>
+            <a href="{% url 'login' %}" class="btn btn-outline-primary">Log in</a>
+          </div>
+        </div>
+      </div>
+    {% endif %}
+  </div>
 {% endblock %}

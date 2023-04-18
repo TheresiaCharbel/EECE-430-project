@@ -1,16 +1,72 @@
 from django.shortcuts import render, redirect
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from .models import Player, Article
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm
 from .forms import PlayerForm, ArticleForm, StatFilter
 
 # Create your views here.
 
+
+@login_required(login_url='login')
 def home(request):
-    return render(request, 'home.html', {'name': "Player"})
+    return render(request, 'home.html', {'name': request.user})
 
-def login(request):
-    return render(request, 'login.html')
+def loginView(request):
 
+    page = 'login'
+
+    if request.user.is_authenticated:
+        return redirect('home')
+
+    if request.method == 'POST':
+        username = request.POST.get('username').lower()
+        password = request.POST.get('password')
+
+        try:
+            user = User.objects.get(username=username)
+        except:
+            messages.error(request, "User does not exist")
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            login(request, user)
+            return redirect('home')
+        else:
+            messages.error(request, "Incorrect username or password")
+
+    context = {'page': page}
+    return render(request, 'login.html', context)
+
+def registerView(request):
+    form = UserCreationForm()   
+
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.username = user.username.lower()
+            user.save()
+            login(request, user)
+            return redirect('home')
+        else:
+            messages.error(request, "Error during registration")
+
+
+    context = {'form': form}
+    return render(request, 'login.html', context)
+
+
+@login_required(login_url='login')
+def logoutView(request):
+    logout(request)
+    return redirect('login')
+
+
+@login_required(login_url='login')
 def playerstats(request):
     form = StatFilter(request.GET)
     if form.is_valid():
@@ -25,6 +81,7 @@ def playerstats(request):
         players = Player.objects.all().order_by('name')
     return render(request, 'playerstats.html', {'form': form, 'players': players})
 
+@login_required(login_url='login')
 def addPlayer(request):
     form = PlayerForm()
     if request.method == 'POST':
@@ -37,6 +94,8 @@ def addPlayer(request):
     context = {'form': form}
     return render(request, 'addplayer.html', context)
 
+
+@login_required(login_url='login')
 def updatePlayer(request, pk):
     player = Player.objects.get(id=pk)
     form = PlayerForm(instance = player)
@@ -52,6 +111,7 @@ def updatePlayer(request, pk):
     context = {'form': form}
     return render(request, 'addplayer.html', context)
 
+@login_required(login_url='login')
 def deletePlayer(request, pk):
     player = Player.objects.get(id=pk)
     if request.method == 'POST':
@@ -60,15 +120,18 @@ def deletePlayer(request, pk):
     context = {'player': player}
     return render(request, 'deleteplayer.html', context)
 
+@login_required(login_url='login')
 def playerProfile(request, pk):
     player = Player.objects.get(id=pk)
     context = {'player': player}
     return render(request, 'playerprofile.html', context)
 
+@login_required(login_url='login')
 def article_list(request):
     articles_list = Article.objects.all()
     return render(request, 'article_list.html',{"articles" : articles_list})
 
+@login_required(login_url='login')
 def addArticle(request):
     form = ArticleForm()
     if request.method == 'POST':
@@ -81,6 +144,7 @@ def addArticle(request):
     context = {'form': form}
     return render(request, 'addarticle.html', context)
 
+@login_required(login_url='login')
 def updatearticle(request, pk):
     article = Article.objects.get(id=pk)
     form = ArticleForm(instance = article)
@@ -96,6 +160,7 @@ def updatearticle(request, pk):
     context = {'form': form}
     return render(request, 'addarticle.html', context)
 
+@login_required(login_url='login')
 def deletearticle(request, pk):
     article = Article.objects.get(id=pk)
     if request.method == 'POST':
